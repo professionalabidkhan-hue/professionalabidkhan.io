@@ -1,0 +1,17 @@
+cat <<EOF > .htaccess
+RewriteEngine On
+
+# 1. Hide .php extension (signin.php becomes just /signin)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([^\.]+)$ \$1.php [NC,L]
+
+# 2. Block access to the Vault's internal files
+<Files "connect.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# 3. Disable directory browsing
+Options -Indexes
+EOF
