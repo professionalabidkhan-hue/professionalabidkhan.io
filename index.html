@@ -3,352 +3,281 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Technical Excellence Laboratory | Abid Khan Pedagogy Institute</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <title>Professor Doctor Abid Khan | Pedagogy Institute & Security Hub</title>
+    <meta name="description" content="The official elite platform of Professor Doctor Abid Khan. Global expert in Pedagogy, secure Alphanumeric OTP systems, and advanced digital education architecture.">
+    <meta name="keywords" content="Professor Doctor Abid Khan, Abid Khan Pedagogy, Pedagogy Institute, Telenor OTP Security, Alphanumeric OTP, Secure Education Gateway, Digital Architecture Pakistan">
+    <meta name="author" content="Professor Doctor Abid Khan">
+    <link rel="icon" type="image/png" href="ABID KHAN.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
+            --primary-blue: #0b63d3;
+            --accent-orange: #ff9800;
             --it-purple: #a855f7;
-            --neon-blue: #0ea5e9;
-            --neon-green: #00ff00;
+            --islamic-green: #10b981;
             --dark-bg: #0a0b10;
+            --glass-white: rgba(255, 255, 255, 0.05);
+            --neon-green: #00ff00;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--dark-bg);
             color: #ffffff;
-            background: radial-gradient(circle at 50% 50%, #161827 0%, #0a0b10 100%);
-            min-height: 100vh;
             overflow-x: hidden;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
         }
 
-        /* --- Header Styles --- */
-        .hero-header {
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 4px;
-            background: linear-gradient(to right, #fff, var(--neon-blue));
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a1c2c 0%, #0a0b10 100%);
+            z-index: -1;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            backdrop-filter: blur(10px);
+            background: rgba(10, 11, 16, 0.8) !important;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .navbar-brand img {
+            border: 2px solid var(--primary-blue);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .navbar-brand img:hover { transform: rotate(360deg) scale(1.1); }
+
+        /* Hero Typography */
+        .hero-title {
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(to right, #fff, var(--primary-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-
-        .btn-return-dashboard {
-            display: inline-block;
-            padding: 12px 25px;
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            transition: 0.3s;
-        }
-
-        .btn-return-dashboard:hover {
-            background: var(--neon-blue);
-            color: #000;
-            box-shadow: 0 0 20px var(--neon-blue);
-        }
-
-        /* --- Auth Button Styles --- */
-        .auth-container {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn-cyber-auth {
-            font-family: 'Orbitron', sans-serif;
-            padding: 10px 25px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-signin {
-            background: transparent;
-            border: 1px solid var(--it-purple);
-            color: var(--it-purple);
-        }
-
-        .btn-signin:hover {
-            background: var(--it-purple);
-            color: #fff;
-            box-shadow: 0 0 15px var(--it-purple);
-        }
-
-        .btn-signup {
-            background: linear-gradient(45deg, var(--it-purple), var(--neon-blue));
-            border: none;
-            color: #fff;
-            box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
-        }
-
-        .btn-signup:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--neon-blue);
-            color: #fff;
-        }
-
-        /* --- Course Card Styling --- */
-        .it-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(168, 85, 247, 0.2);
-            border-radius: 24px;
-            padding: 45px 20px;
-            text-decoration: none !important;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .it-btn::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(168, 85, 247, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: 0.6s;
-        }
-
-        .it-btn:hover::before { transform: translateX(100%); }
-
-        .it-btn:hover {
-            background: rgba(168, 85, 247, 0.08);
-            border-color: var(--it-purple);
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(168, 85, 247, 0.2);
-        }
-
-        .it-btn i {
             font-size: 3.5rem;
-            color: var(--it-purple);
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.4));
         }
 
-        .course-title-master {
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 1.15rem;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        /* Card Architecture */
+        .card {
+            background: var(--glass-white);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            height: 100%;
         }
 
-        .duration-badge {
-            background: var(--it-purple) !important;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem !important;
-            padding: 8px 12px !important;
-            border-radius: 0 0 0 15px !important;
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(11, 99, 211, 0.2);
         }
 
-        .blink { animation: blinker 1.5s linear infinite; }
-        @keyframes blinker { 50% { opacity: 0.3; } }
+        .card-body.quran { border-top: 4px solid var(--primary-blue); }
+        .card-body.it { border-top: 4px solid var(--accent-orange); }
+        .card-body.it-panel { border-top: 4px solid var(--it-purple); }
+        .card-body.islamic { border-top: 4px solid var(--islamic-green); }
 
-        /* --- AI Launcher --- */
-        #ai-launcher {
-            position: fixed; bottom: 20px; right: 20px; 
-            width: 80px; height: 80px; background: #000; 
-            border: 2px solid var(--neon-green); border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; z-index: 10000;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-        }
-
-        #launcher-inner {
-            width: 60px; height: 60px; border-radius: 50%; border: 1px solid var(--neon-green);
+        .icon-circle {
+            width: 60px; height: 60px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            animation: pulse-border 2s infinite;
+            margin: 0 auto 15px; font-size: 24px;
+            background: rgba(255,255,255,0.1);
         }
 
-        @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(0, 255, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0); } }
+        /* AI Ghostly Glow & Effects */
+        .ai-msg {
+            background: rgba(0, 255, 0, 0.1);
+            color: #fff; padding: 14px 18px; border-radius: 20px 20px 20px 4px;
+            align-self: flex-start; max-width: 85%; font-size: 14px;
+            border-left: 4px solid var(--neon-green);
+            animation: ghost-flicker 5s infinite;
+        }
+
+        @keyframes ghost-flicker {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 1; }
+            93% { opacity: 0.7; transform: translateX(2px); }
+            94% { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Buttons */
+        .btn-primary { background: var(--primary-blue); border: none; border-radius: 12px; font-weight: 600; }
+        .btn-primary:hover { background: #084ca3; box-shadow: 0 0 15px var(--primary-blue); }
+
+        .wave-bar { width: 3px; height: 10px; background: #00ff00; animation: wave 1s infinite ease-in-out; }
+        @keyframes wave { 0%, 100% { height: 5px; } 50% { height: 15px; } }
+        @keyframes pulse-border { 0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.4); } 50% { box-shadow: 0 0 0 12px rgba(0, 255, 0, 0); } }
     </style>
 </head>
 <body>
 
-<div class="container mt-5 pt-4">
-    <div class="row align-items-center mb-5">
-        <div class="col-md-8">
-            <h1 class="hero-header fw-bold text-uppercase display-5">Technical Excellence Laboratory</h1>
-            <p class="text-secondary fs-5">Secure Module Selection: Deploy your learning path.</p>
-            
-            <div class="d-flex flex-wrap gap-3 align-items-center mt-3">
-                <a href="DASHBOARD_IT_MENTOR.html" class="btn-return-dashboard">
-                    <i class="fas fa-th-large me-2"></i> Command Bridge
-                </a>
-                <div class="auth-container">
-                    <a href="signin.html" class="btn-cyber-auth btn-signin">
-                        <i class="fas fa-sign-in-alt"></i> Sign In
-                    </a>
-                    <a href="signup.html" class="btn-cyber-auth btn-signup">
-                        <i class="fas fa-user-plus"></i> Join Lab
-                    </a>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="ABID KHAN.png" alt="Logo" width="45" height="45" class="rounded-circle">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="it_panel.html">IT Lab</a></li>
+                    <li class="nav-item"><a class="nav-link" href="islamic_studies.html">Islamic Studies</a></li>
+                    <li class="nav-item"><a class="nav-link" href="jobs.html">Jobs</a></li>
+                </ul>
+                <div class="d-flex">
+                    <a href="signin.html" class="btn btn-outline-light me-2">Sign In</a>
+                    <a href="signup.html" class="btn btn-primary">Join Now</a>
                 </div>
             </div>
         </div>
-        
-        <div class="col-md-4 mt-4 mt-md-0">
-            <div class="p-4 rounded border border-info bg-dark text-center shadow-lg" style="background: rgba(0,0,0,0.6) !important;">
-                <small class="text-info fw-bold text-uppercase" style="letter-spacing: 2px;">Global Active Nodes</small>
-                <h1 class="text-white fw-bold display-4 mb-0" id="userCount">38</h1>
-                <span class="badge bg-success blink p-2 mt-2">SYSTEM SECURE</span>
+    </nav>
+
+    <section class="container text-center pt-5 mt-5">
+        <div class="py-5">
+            <h1 class="hero-title text-uppercase">Abid Khan E-Learning Hub</h1>
+            <p class="lead text-secondary">Global Education Architect: Designing the Future of Tech and Spirituality.</p>
+            <div class="mt-4">
+                <a href="#explore" class="btn btn-primary btn-lg px-5">Explore Modules</a>
+                <a href="jobs.html" class="btn btn-outline-light btn-lg ms-3">Browse Jobs</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mb-5" id="explore">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body it-panel text-center">
+                        <div class="icon-circle" style="background: rgba(168, 85, 247, 0.1);">
+                            <i class="fas fa-laptop-code" style="color:var(--it-purple)"></i>
+                        </div>
+                        <h4 class="mt-2" style="color:var(--it-purple)">IT Panel</h4>
+                        <p class="small text-secondary">Full-stack mastery & secure terminal training.</p>
+                        <a href="it_panel.html" class="btn btn-outline-light w-100 mt-3" style="border-color:var(--it-purple)">Enter Lab</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body islamic text-center">
+                        <div class="icon-circle" style="background: rgba(16, 185, 129, 0.1);">
+                            <i class="fas fa-book-quran" style="color:var(--islamic-green)"></i>
+                        </div>
+                        <h4 class="mt-2" style="color:var(--islamic-green)">Islamic Studies</h4>
+                        <p class="small text-secondary">Tajweed, Hifz, and the Al-Bukhari Library.</p>
+                        <a href="islamic_studies.html" class="btn btn-outline-light w-100 mt-3" style="border-color:var(--islamic-green)">Enter Madrasa</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body quran text-center">
+                        <div class="icon-circle text-primary">
+                            <i class="fas fa-users-rays"></i>
+                        </div>
+                        <h4 class="mt-2 text-primary">Live Tutors</h4>
+                        <p class="small text-secondary">Connect with expert Male & Female Trainers.</p>
+                        <a href="livetutors.html" class="btn btn-outline-primary w-100 mt-3">Find Tutors</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center" style="border-top: 4px solid #fff;">
+                        <div class="icon-circle text-white">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h4 class="mt-2 text-white">Careers</h4>
+                        <p class="small text-secondary">Global opportunities in Tech and Logistics.</p>
+                        <a href="jobs.html" class="btn btn-outline-light w-100 mt-3">View Openings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="ai-launcher" onclick="toggleAI()">
+        <div id="ai-badge" style="position:absolute; top:0; right:0; width:20px; height:20px; background:red; border:2px solid black; border-radius:50%; display:none; animation: blink 1s infinite;"></div>
+        <div id="launcher-inner">
+            <span id="launcher-text" style="font-size:10px; color:#00ff00; font-weight:bold; text-align:center; font-family: 'Courier New';">MASTER<br>CORE</span>
+        </div>
+    </div>
+
+    <div id="welcome-bubble" style="display:none; position:fixed; bottom:100px; right:30px; background:#00ff00; color:#000; padding:10px 15px; border-radius:15px; font-family: sans-serif; font-size:12px; font-weight:bold; z-index:10001; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+        Hello! Need help with your courses?
+    </div>
+
+    <div id="ai-command-sector" style="display:none; position:fixed; bottom:100px; right:20px; width:420px; height:600px; background: rgba(0, 8, 0, 0.98); backdrop-filter: blur(20px); border: 1px solid #00ff00; border-radius:24px; z-index:9999; flex-direction:column; box-shadow: 0 25px 60px rgba(0,0,0,1); overflow: hidden;">
+        <div style="padding:18px 25px; background: rgba(0,255,0,0.07); border-bottom: 1px solid rgba(0,255,0,0.2); display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <div style="color:#00ff00; font-weight:bold; font-size:15px; letter-spacing:1px; font-family: 'Orbitron';">MASTER CHIEF AI</div>
+                <div id="status-text" style="font-size:10px; color:#00ff00; opacity:0.7;">System Operational</div>
+            </div>
+            <span onclick="toggleAI()" style="color:#00ff00; cursor:pointer; font-size:30px;">&times;</span>
+        </div>
+        <div id="discussion-feed" style="flex:1; padding:25px; overflow-y:auto; display:flex; flex-direction:column; gap:18px;">
+            <div class="ai-msg">Connection secure. Professor Abid Khan's neural network is active. How may I facilitate your success?</div>
+        </div>
+        <div style="padding:20px;">
+            <div style="display:flex; background:rgba(255,255,255,0.08); border:1px solid #00ff00; border-radius:30px; padding:6px 18px; align-items:center;">
+                <input type="text" id="master-input" placeholder="Ask the Master Core..." style="flex:1; background:transparent; border:none; color:#fff; padding:10px; outline:none;">
+                <button onclick="askAI()" style="background:#00ff00; border:none; width:38px; height:38px; border-radius:50%; cursor:pointer;">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="row g-4 mb-5">
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/ms_office.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">3 MONTHS</span>
-                <i class="fas fa-file-word"></i>
-                <span class="course-title-master">MS Office</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/graphic_designing.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">6 MONTHS</span>
-                <i class="fas fa-palette"></i>
-                <span class="course-title-master">Graphic Designing</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/website_development.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">6 MONTHS</span>
-                <i class="fas fa-code"></i>
-                <span class="course-title-master">Website Development</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/android_app_development.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">2 YEARS</span>
-                <i class="fas fa-android"></i>
-                <span class="course-title-master">Android App Development</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/advance_excel_and_spreadsheets.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">3 MONTHS</span>
-                <i class="fas fa-file-excel"></i>
-                <span class="course-title-master">Advance Excel</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/ethical_hacking.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">6 MONTHS</span>
-                <i class="fas fa-user-secret"></i>
-                <span class="course-title-master">Ethical Hacking</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/network_security.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">6 MONTHS</span>
-                <i class="fas fa-shield-halved"></i>
-                <span class="course-title-master">Network Security</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/it_security_architecture.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">2 YEARS</span>
-                <i class="fas fa-sitemap"></i>
-                <span class="course-title-master">Security Architecture</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/data_science.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">2 YEARS</span>
-                <i class="fas fa-database"></i>
-                <span class="course-title-master">Data Science</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/data_analytics.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">6 MONTHS</span>
-                <i class="fas fa-chart-pie"></i>
-                <span class="course-title-master">Data Analytics</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/big_data.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">6 MONTHS</span>
-                <i class="fas fa-server"></i>
-                <span class="course-title-master">Big Data</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/cloud_infrastructure.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">6 MONTHS</span>
-                <i class="fas fa-cloud"></i>
-                <span class="course-title-master">Cloud Infrastructure</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/python.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">3 MONTHS</span>
-                <i class="fa-brands fa-python"></i>
-                <span class="course-title-master">Python Programming</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/ai_fundamentals.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">6 MONTHS</span>
-                <i class="fas fa-brain"></i>
-                <span class="course-title-master">AI Fundamentals</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/machine_learning.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">2 YEARS</span>
-                <i class="fas fa-robot"></i>
-                <span class="course-title-master">Machine Learning</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/full_stack_development.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">2 YEARS</span>
-                <i class="fas fa-layer-group"></i>
-                <span class="course-title-master">Full Stack Mastery</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/ui_ux_design.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">3 MONTHS</span>
-                <i class="fas fa-pen-nib"></i>
-                <span class="course-title-master">UI/UX Design</span>
-            </a>
-        </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <a href="courses/digital_marketing_and_seo.html" class="it-btn">
-                <span class="badge position-absolute top-0 end-0 m-0 duration-badge">6 MONTHS</span>
-                <i class="fas fa-magnifying-glass-chart"></i>
-                <span class="course-title-master">Digital Marketing</span>
-            </a>
-        </div>
-    </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<div id="ai-launcher" onclick="alert('Neural Link Initiated... Welcome Student.')">
-    <div id="launcher-inner">
-        <span style="font-size:11px; color:var(--neon-green); font-weight:bold; text-align:center; font-family:'Orbitron'">MASTER<br>CHIEF</span>
-    </div>
-</div>
+    <script>
+        // Security Logic
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && [73, 74, 67].includes(e.keyCode)) || (e.ctrlKey && [85, 83].includes(e.keyCode))) return false;
+        };
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+        // AI Logic
+        function toggleAI() {
+            const sector = document.getElementById('ai-command-sector');
+            sector.style.display = (sector.style.display !== "flex") ? "flex" : "none";
+            document.getElementById('ai-badge').style.display = "none";
+            document.getElementById('welcome-bubble').style.display = "none";
+        }
+
+        async function askAI() {
+            const input = document.getElementById('master-input');
+            const feed = document.getElementById('discussion-feed');
+            const query = input.value.trim();
+            if(!query) return;
+
+            feed.innerHTML += `<div style="background: #00ff00; color: #000; padding: 12px 18px; border-radius: 20px 20px 4px 20px; align-self: flex-end; max-width: 85%; font-size: 14px; font-weight: 600;">${query}</div>`;
+            input.value = '';
+            
+            setTimeout(() => {
+                feed.innerHTML += `<div class="ai-msg">Analyzing query... Requesting clearance from Professor Doctor Abid Khan. Please consult the <a href="it_panel.html" style="color:yellow">IT Lab</a> for technical modules.</div>`;
+                feed.scrollTop = feed.scrollHeight;
+            }, 1000);
+        }
+
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('ai-badge').style.display = "block";
+                document.getElementById('welcome-bubble').style.display = "block";
+            }, 3000);
+        };
+    </script>
 </body>
 </html>
