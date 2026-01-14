@@ -208,77 +208,15 @@
         </div>
     </section>
 
-    <div id="ai-launcher" onclick="toggleAI()">
-        <div id="ai-badge" style="position:absolute; top:0; right:0; width:20px; height:20px; background:red; border:2px solid black; border-radius:50%; display:none; animation: blink 1s infinite;"></div>
-        <div id="launcher-inner">
-            <span id="launcher-text" style="font-size:10px; color:#00ff00; font-weight:bold; text-align:center; font-family: 'Courier New';">MASTER<br>CORE</span>
-        </div>
     </div>
 
-    <div id="welcome-bubble" style="display:none; position:fixed; bottom:100px; right:30px; background:#00ff00; color:#000; padding:10px 15px; border-radius:15px; font-family: sans-serif; font-size:12px; font-weight:bold; z-index:10001; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-        Hello! Need help with your courses?
-    </div>
 
-    <div id="ai-command-sector" style="display:none; position:fixed; bottom:100px; right:20px; width:420px; height:600px; background: rgba(0, 8, 0, 0.98); backdrop-filter: blur(20px); border: 1px solid #00ff00; border-radius:24px; z-index:9999; flex-direction:column; box-shadow: 0 25px 60px rgba(0,0,0,1); overflow: hidden;">
-        <div style="padding:18px 25px; background: rgba(0,255,0,0.07); border-bottom: 1px solid rgba(0,255,0,0.2); display:flex; justify-content:space-between; align-items:center;">
-            <div>
-                <div style="color:#00ff00; font-weight:bold; font-size:15px; letter-spacing:1px; font-family: 'Orbitron';">MASTER CHIEF AI</div>
-                <div id="status-text" style="font-size:10px; color:#00ff00; opacity:0.7;">System Operational</div>
-            </div>
-            <span onclick="toggleAI()" style="color:#00ff00; cursor:pointer; font-size:30px;">&times;</span>
         </div>
-        <div id="discussion-feed" style="flex:1; padding:25px; overflow-y:auto; display:flex; flex-direction:column; gap:18px;">
-            <div class="ai-msg">Connection secure. Professor Abid Khan's neural network is active. How may I facilitate your success?</div>
-        </div>
-        <div style="padding:20px;">
-            <div style="display:flex; background:rgba(255,255,255,0.08); border:1px solid #00ff00; border-radius:30px; padding:6px 18px; align-items:center;">
-                <input type="text" id="master-input" placeholder="Ask the Master Core..." style="flex:1; background:transparent; border:none; color:#fff; padding:10px; outline:none;">
-                <button onclick="askAI()" style="background:#00ff00; border:none; width:38px; height:38px; border-radius:50%; cursor:pointer;">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-        </div>
-    </div>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        // Security Logic
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && [73, 74, 67].includes(e.keyCode)) || (e.ctrlKey && [85, 83].includes(e.keyCode))) return false;
-        };
-
-        // AI Logic
-        function toggleAI() {
-            const sector = document.getElementById('ai-command-sector');
-            sector.style.display = (sector.style.display !== "flex") ? "flex" : "none";
-            document.getElementById('ai-badge').style.display = "none";
-            document.getElementById('welcome-bubble').style.display = "none";
-        }
-
-        async function askAI() {
-            const input = document.getElementById('master-input');
-            const feed = document.getElementById('discussion-feed');
-            const query = input.value.trim();
-            if(!query) return;
-
-            feed.innerHTML += `<div style="background: #00ff00; color: #000; padding: 12px 18px; border-radius: 20px 20px 4px 20px; align-self: flex-end; max-width: 85%; font-size: 14px; font-weight: 600;">${query}</div>`;
-            input.value = '';
-            
-            setTimeout(() => {
-                feed.innerHTML += `<div class="ai-msg">Analyzing query... Requesting clearance from Professor Doctor Abid Khan. Please consult the <a href="it_panel.html" style="color:yellow">IT Lab</a> for technical modules.</div>`;
-                feed.scrollTop = feed.scrollHeight;
-            }, 1000);
-        }
-
-        window.onload = () => {
-            setTimeout(() => {
-                document.getElementById('ai-badge').style.display = "block";
-                document.getElementById('welcome-bubble').style.display = "block";
-            }, 3000);
-        };
-    </script>
+<div id="footer"></div> <script> // Load header and footer dynamically fetch("header.html").then(res => res.text()).then(data => document.getElementById("header").innerHTML = data); fetch("footer.html").then(res => res.text()).then(data => document.getElementById("footer").innerHTML = data); </script>
 </body>
 </html>
+
 
