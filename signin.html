@@ -98,28 +98,55 @@
 
 <!-- Footer Include -->
 <div id="footer"></div>
-
 <script>
-  // Load header and footer dynamically
+  // 1. Load header and footer
   fetch("header.html").then(res => res.text()).then(data => document.getElementById("header").innerHTML = data);
   fetch("footer.html").then(res => res.text()).then(data => document.getElementById("footer").innerHTML = data);
 
-  // Signin logic
-  document.getElementById('loginGate').addEventListener('submit', function(e) {
-    e.preventDefault();
+  // 2. Main Signin Logic
+  async function handleSignin(event) {
+    event.preventDefault();
+    
     const email = document.getElementById('email').value.trim();
     const pass = document.getElementById('password').value.trim();
     const errorBox = document.getElementById('vault-error');
 
+    // STEP A: Check for Master/Professor Access (Hardcoded for you)
     if (email === "professor@abidkhan.com" && pass === "MASTER_CORE_2026") {
+      localStorage.setItem('userRole', 'mentor');
       window.location.href = "DASHBOARD_MENTOR.html";
-    } else if (email === "student@abidkhan.com" && pass === "STUDENT_GATE_2026") {
-      window.location.href = "DASHBOARD_STUDENT.html";
-    } else {
-      errorBox.style.display = "block";
-      errorBox.innerText = "Identity Verification Failed.";
+      return;
     }
-  });
+
+    // STEP B: Check MongoDB for Students (Dynamic Access)
+    try {
+      const response = await fetch('/api/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pass })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Save to LocalStorage so Gemini AI knows who is talking
+        localStorage.setItem('userEmail', data.email);
+        localStorage.setItem('userName', data.name);
+        window.location.href = "STUDENTSDASHBOARD.html";
+      } else {
+        errorBox.style.display = "block";
+        errorBox.innerText = "Identity Verification Failed. Check your credentials.";
+      }
+    } catch (err) {
+      errorBox.style.display = "block";
+      errorBox.innerText = "Master Core Connection Error. Try again later.";
+    }
+  }
+
+  // Attach the function to your form
+  const loginGate = document.getElementById('loginGate');
+  if(loginGate) {
+    loginGate.addEventListener('submit', handleSignin);
+  }
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
