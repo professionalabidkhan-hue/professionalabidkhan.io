@@ -102,85 +102,54 @@
         </form>
     </div>
 </div>
-<script>
-  // Role selection for signup
-  function selectPath(role) {
-    document.getElementById('card-trainer').classList.remove('active');
-    document.getElementById('card-student').classList.remove('active');
+    <script>
+// Optimized Signup Logic for Master Abid Khan
+const signupForm = document.getElementById('signupForm');
+if(signupForm) {
+  signupForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
     
-    if(role === 'trainer') {
-      document.getElementById('card-trainer').classList.add('active');
-      document.getElementById('trainerFields').style.display = 'block';
-    } else {
-      document.getElementById('card-student').classList.add('active');
-      document.getElementById('trainerFields').style.display = 'none';
-    }
-    document.getElementById('selectedRole').value = role;
-  }
+    // 1. Get Form Data
+    const name = document.getElementById('full_name').value;
+    const email = document.getElementById('email').value; // Ensure you have this ID in HTML
+    const role = document.getElementById('selectedRole').value;
+    const whatsapp = document.getElementById('whatsapp').value;
+    const password = document.getElementById('password').value;
 
-  // Enable/disable submit button based on agreement
-  function toggleButton() {
-    const checkbox = document.getElementById('agree');
-    const btn = document.getElementById('submitBtn');
-    if(checkbox.checked) {
-      btn.disabled = false;
-      btn.classList.add('btn-active');
-    } else {
-      btn.disabled = true;
-      btn.classList.remove('btn-active');
-    }
-  }
+    try {
+      // 2. Send Data to MongoDB (via Vercel API)
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          name, 
+          email, 
+          role, 
+          whatsapp, 
+          password, 
+          joined_at: new Date() 
+        })
+      });
 
-  // Signup form logic
-  const signupForm = document.getElementById('signupForm');
-  if(signupForm) {
-    signupForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const name = document.getElementById('full_name').value;
-      const role = document.getElementById('selectedRole').value;
-      const whatsapp = document.getElementById('whatsapp').value;
+      if (response.ok) {
+        // 3. Prepare WhatsApp Notification
+        const waText = encodeURIComponent(
+          `Asalamu Alaikum Master Abid Khan. New Identity Saved to MongoDB.\nName: ${name}\nRole: ${role}\nEmail: ${email}`
+        );
+        const waLink = `https://api.whatsapp.com/send?phone=923497469638&text=${waText}`;
 
-      const waText = encodeURIComponent(
-        `Asalamu Alaikum Master Abid Khan. New Identity Registered.\nName: ${name}\nRole: ${role}\nWhatsApp: ${whatsapp}`
-      );
-      const waLink = `https://api.whatsapp.com/send?phone=923497469638&text=${waText}`;
-
-      alert('Identity Initialization Request Sent to Master Core.');
-      window.open(waLink, '_blank');
-      window.location.href = 'signin.html?registered';
-    });
-  }
-
-  // Signin gate logic
-  const loginGate = document.getElementById('loginGate');
-  if(loginGate) {
-    loginGate.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const email = document.getElementById('email').value.trim();
-      const pass = document.getElementById('password').value.trim();
-      const errorBox = document.getElementById('vault-error');
-
-      if (email === "professor@abidkhan.com" && pass === "MASTER_CORE_2026") {
-        window.location.href = "DASHBOARD_MENTOR.html";
-      } else if (email === "student@abidkhan.com" && pass === "STUDENT_GATE_2026") {
-        window.location.href = "DASHBOARD_STUDENT.html";
+        alert('Identity Saved to Database. Master Core Notified.');
+        window.open(waLink, '_blank');
+        window.location.href = 'signin.html?registered';
       } else {
-        errorBox.style.display = "block";
-        errorBox.innerText = "Identity Verification Failed.";
+        alert("Database Error: Could not save identity.");
       }
-    });
-  }
-
-  // Disable inspect element
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  document.onkeydown = function(e) {
-    if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && [73, 74, 67].includes(e.keyCode))) return false;
-  };
-</script>
-
-
-</script>
+    } catch (error) {
+      console.error("Connection Failed:", error);
+      alert("Network Error. Check your Master Core connection.");
+    }
+  });
+}
+    </script>
 </body>
 </html>
