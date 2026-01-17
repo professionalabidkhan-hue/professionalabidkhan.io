@@ -7,6 +7,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script>
+  if (!localStorage.getItem("userEmail") && !localStorage.getItem("userRole")) {
+      alert("ACCESS DENIED: Identity Not Verified.");
+      window.location.href = "signin.html";
+  }
+</script>
     <style>
         :root { --emerald: #00e676; --dark-core: #05060a; --glass-white: rgba(255, 255, 255, 0.05); --info-blue: #4fc3f7; }
         body { background: var(--dark-core); color: #f8f9fa; font-family: 'Inter', sans-serif; min-height: 100vh; }
@@ -170,4 +176,5 @@
 
 </script>
 </body>
+
 </html>
