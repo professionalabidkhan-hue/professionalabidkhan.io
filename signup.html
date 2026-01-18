@@ -102,7 +102,8 @@
         </form>
     </div>
 </div>
-// 1. UI Control Functions
+<script>
+  // 1. UI Control Functions (Keep as is)
 function selectPath(role) {
     document.getElementById('card-trainer').classList.toggle('active', role === 'trainer');
     document.getElementById('card-student').classList.toggle('active', role === 'student');
@@ -117,23 +118,27 @@ function toggleButton() {
     btn.classList.toggle('btn-active', isChecked);
 }
 
-// 2. Main Logic - Re-encoded for security
+// 2. Optimized Stealth Logic with Status Feedback
 const _coreLogic = () => {
-    // Disable Right Click & Dev Tools
+    // Security layer
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.onkeydown = (e) => {
         if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 83))) return false;
     };
 
     const form = document.getElementById('signupForm');
+    const status = document.getElementById('statusMessage');
+
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
+            
+            // Initializing State
             btn.innerText = "INITIALIZING...";
             btn.disabled = true;
+            status.className = "mt-3 p-3 d-none"; // Reset status
 
-            // Prepare Data to match your D1 Column Names
             const payload = {
                 name: document.getElementById('full_name').value,
                 email: document.getElementById('email').value,
@@ -143,8 +148,8 @@ const _coreLogic = () => {
                 department: document.getElementById('department').value,
                 timing: document.getElementById('timing').value,
                 fee: document.getElementById('proposed_fee').value,
-                qc: document.getElementById('qualification') ? document.getElementById('qualification').value : null,
-                ex: document.getElementById('experience') ? document.getElementById('experience').value : null
+                qc: document.getElementById('qualification')?.value || null,
+                ex: document.getElementById('experience')?.value || null
             };
 
             try {
@@ -154,17 +159,31 @@ const _coreLogic = () => {
                     body: JSON.stringify(payload)
                 });
 
-                if (response.ok) {
-                    alert('Identity Secured. Master Core Notified.');
-                    window.location.href = 'signin.html'; // Or wherever you want them to go
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    // SUCCESS STATE
+                    status.innerText = "✓ IDENTITY SECURED: Information Submitted to Master Core.";
+                    status.className = "mt-3 p-3 d-block alert-success text-success";
+                    status.style.backgroundColor = "rgba(40, 167, 69, 0.15)";
+                    
+                    // Delay redirect to let them see the success message
+                    setTimeout(() => { window.location.href = 'signin.html'; }, 3000);
                 } else {
-                    const errData = await response.json();
-                    alert('System Error: ' + (errData.error || 'Check Logs'));
+                    // ERROR STATE (Logic/Database Error)
+                    status.innerText = "⚠ ERROR: " + (result.error || "Submission Failed. Verification required.");
+                    status.className = "mt-3 p-3 d-block alert-danger text-danger";
+                    status.style.backgroundColor = "rgba(220, 53, 69, 0.15)";
+                    
                     btn.innerText = "INITIALIZE IDENTITY";
                     btn.disabled = false;
                 }
             } catch (err) {
-                alert('Connection Failed to Master Hub');
+                // CRITICAL STATE (Network/Server down)
+                status.innerText = "✖ CONNECTION FAILED: Unable to reach Master Hub.";
+                status.className = "mt-3 p-3 d-block alert-warning text-warning";
+                status.style.backgroundColor = "rgba(255, 193, 7, 0.15)";
+                
                 btn.innerText = "INITIALIZE IDENTITY";
                 btn.disabled = false;
             }
@@ -172,6 +191,7 @@ const _coreLogic = () => {
     }
 };
 
-_coreLogic();
+_coreLogic();  
+</script>
 </body>
 </html>
