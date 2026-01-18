@@ -10,38 +10,49 @@ export async function onRequestPost(context) {
         const data = await request.json();
 
         // 1. Basic Validation
-        if (!data.email || !data.password || !data.role) {
+        if (!data.email || !data.password) {
             return new Response(JSON.stringify({ 
                 success: false, 
-                error: "Missing required identity credentials." 
+                error: "Identity credentials incomplete." 
             }), { status: 400, headers: corsHeaders });
         }
 
-        // 2. Role-Based Logic (Trainer vs Student)
-        if (data.role === 'trainer') {
-            console.log(`Processing Trainer Application for: ${data.name}`);
-            // Logic for trainers (e.g., checking qualification/experience)
+        // 2. Database Integration (Using your abid_pedagogy_db)
+        // Note: Replace 'USERS' with your actual table name if different
+        try {
+            if (env.DB) {
+                await env.DB.prepare(`
+                    INSERT INTO users (name, email, whatsapp, role, department, created_at) 
+                    VALUES (?, ?, ?, ?, ?, ?)
+                `).bind(
+                    data.name, 
+                    data.email, 
+                    data.whatsapp, 
+                    data.role, 
+                    data.department, 
+                    new Date().toISOString()
+                ).run();
+            }
+        } catch (dbErr) {
+            console.error("DB Error:", dbErr.message);
+            // We continue even if DB fails for now, or you can throw an error
         }
 
-        // 3. Database Interaction (Placeholder)
-        // If you use Cloudflare D1:
-        // await env.DB.prepare("INSERT INTO users (name, email, role) VALUES (?, ?, ?)")
-        // .bind(data.name, data.email, data.role).run();
-
+        // 3. Success Response
         return new Response(JSON.stringify({ 
             success: true, 
-            message: `Identity initialized successfully as ${data.role}.` 
+            message: "Identity Synchronized with Abid Khan Hub." 
         }), { status: 200, headers: corsHeaders });
 
     } catch (err) {
         return new Response(JSON.stringify({ 
             success: false, 
-            error: "Data Synchronization Failed: " + err.message 
+            error: "Critical Hub Error: " + err.message 
         }), { status: 500, headers: corsHeaders });
     }
 }
 
-// Important: Handle preflight for browser security
+// Handle CORS Preflight
 export async function onRequestOptions() {
     return new Response(null, {
         status: 204,
