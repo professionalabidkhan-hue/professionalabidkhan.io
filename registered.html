@@ -4,31 +4,36 @@
     <title>Master Roster | Abid Khan Hub</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; padding: 40px; }
-        .roster-card { background: #1e293b; border-radius: 12px; padding: 20px; border: 1px solid #334155; }
+        .roster-card { background: #1e293b; border-radius: 12px; padding: 20px; border: 1px solid #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { color: #3b82f6; letter-spacing: 1px; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { text-align: left; border-bottom: 2px solid #3b82f6; padding: 10px; color: #94a3b8; }
-        td { padding: 12px; border-bottom: 1px solid #334155; }
-        .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-        .trainer { background: #8b5cf6; }
-        .student { background: #10b981; }
-        .whatsapp-btn { color: #25d366; text-decoration: none; font-weight: bold; }
+        th { text-align: left; border-bottom: 2px solid #3b82f6; padding: 10px; color: #94a3b8; text-transform: uppercase; font-size: 12px; }
+        td { padding: 12px; border-bottom: 1px solid #334155; font-size: 14px; }
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        /* Style based on the 'role' values */
+        .trainer { background: #8b5cf6; color: white; }
+        .student { background: #10b981; color: white; }
+        .whatsapp-btn { color: #25d366; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .whatsapp-btn:hover { text-decoration: underline; }
+        small { color: #64748b; }
     </style>
 </head>
 <body>
     <div class="roster-card">
-        <h2>Master Hub: Registered Members</h2>
+        <h2>MASTER HUB: REGISTERED MEMBERS</h2>
         <table id="rosterTable">
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Identity</th>
                     <th>Role</th>
                     <th>Dept/Focus</th>
-                    <th>WhatsApp</th>
-                    <th>Registration Date</th>
+                    <th>Contact</th>
+                    <th>Initialization Date</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
-                </tbody>
+                <tr><td colspan="5" style="text-align:center;">Loading Identity Records...</td></tr>
+            </tbody>
         </table>
     </div>
 
@@ -39,24 +44,39 @@
             if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 83))) return false;
         };
 
-        // AUTO-LOAD DATA FROM MONGODB
+        // FETCH DATA FROM D1 (via get-registrations.js)
         async function loadRoster() {
             try {
                 const response = await fetch('/api/get-registrations');
-                const data = await response.json();
+                const result = await response.json();
+                
                 const tableBody = document.getElementById('tableBody');
                 
-                tableBody.innerHTML = data.map(user => `
-                    <tr>
-                        <td><strong>${user.name}</strong><br><small>${user.email}</small></td>
-                        <td><span class="badge ${user.role}">${user.role.toUpperCase()}</span></td>
-                        <td>${user.department || 'N/A'}</td>
-                        <td><a href="https://wa.me/${user.whatsapp}" class="whatsapp-btn" target="_blank">💬 ${user.whatsapp}</a></td>
-                        <td>${new Date(user.joined_at).toLocaleDateString()}</td>
-                    </tr>
-                `).join('');
+                if (result.success && result.data.length > 0) {
+                    tableBody.innerHTML = result.data.map(user => `
+                        <tr>
+                            <td>
+                                <strong>${user.full_name}</strong><br>
+                                <small>${user.email}</small>
+                            </td>
+                            <td>
+                                <span class="badge ${user.role.toLowerCase()}">${user.role}</span>
+                            </td>
+                            <td>${user.department || 'N/A'}</td>
+                            <td>
+                                <a href="https://wa.me/${user.whatsapp}" class="whatsapp-btn" target="_blank">
+                                    💬 ${user.whatsapp}
+                                </a>
+                            </td>
+                            <td>${user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No identities found in core.</td></tr>';
+                }
             } catch (err) {
                 console.error("Master Roster Error:", err);
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Connection to Master Core Failed.</td></tr>';
             }
         }
 
