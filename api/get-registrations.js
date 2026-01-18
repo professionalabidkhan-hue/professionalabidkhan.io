@@ -2,51 +2,39 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Handle CORS preflight requests
-    if (request.method === "OPTIONS") {
-      return new Response(null, {
+    // 1. Only allow GET requests for security
+    if (request.method !== "GET") {
+      return new Response("Method Not Allowed", { status: 405 });
+    }
+
+    try {
+      // 2. Query all users from the database
+      // We sort by 'id' descending so you see the newest registrations first
+      const { results } = await env.DB.prepare(
+        "SELECT * FROM users ORDER BY id DESC"
+      ).all();
+
+      // 3. Return the data as JSON
+      return new Response(JSON.stringify({
+        success: true,
+        count: results.length,
+        data: results
+      }), {
         headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*", // Allows you to view this from your frontend
         },
       });
+
+    } catch (err) {
+      // 4. Error Handling
+      return new Response(JSON.stringify({
+        success: false,
+        error: err.message
+      }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      });
     }
-
-    if (url.pathname === "/api/signup" && request.method === "POST") {
-      try {
-        const data = await request.json();
-
-        // Execution of the SQL statement
-        const result = await env.DB.prepare(`
-          INSERT INTO users (full_name, email, whatsapp, password, role, department, timing, qualification, experience, proposed_fee)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `).bind(
-          data.name, 
-          data.email, 
-          data.whatsapp, 
-          data.password, 
-          data.role, 
-          data.department, 
-          data.timing, 
-          data.qc || null, 
-          data.ex || null, 
-          data.fee || null
-        ).run();
-
-        return new Response(JSON.stringify({ success: true }), {
-          headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
-        });
-
-      } catch (err) {
-        return new Response(JSON.stringify({ error: err.message }), {
-          status: 500,
-          headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
-        });
-      }
-    }
-
-    // Fallback for other routes
-    return new Response("Not Found", { status: 404 });
-  }
+  },
 };
