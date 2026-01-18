@@ -13,7 +13,6 @@ export async function onRequest(context) {
 
     try {
         const data = await request.json();
-        
         if (!env.DB) {
             return new Response(JSON.stringify({ success: false, error: "Database Link Missing" }), { status: 500, headers: corsHeaders });
         }
@@ -21,12 +20,14 @@ export async function onRequest(context) {
         await env.DB.prepare(
             "INSERT INTO users (name, email, whatsapp, password, role, department, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
         ).bind(
-            data.name, data.email, data.whatsapp, data.password, data.role, data.department, new Date().toISOString()
+            data.name, data.email, data.whatsapp, data.password, data.role || 'student', data.department || 'general', new Date().toISOString()
         ).run();
 
         return new Response(JSON.stringify({ success: true, message: "Identity Synchronized" }), { status: 200, headers: corsHeaders });
 
     } catch (err) {
-        return new Response(JSON.stringify({ success: false, error: err.message }), { status: 500, headers: corsHeaders });
+        let msg = err.message;
+        if (msg.includes("UNIQUE")) msg = "Email already registered.";
+        return new Response(JSON.stringify({ success: false, error: msg }), { status: 500, headers: corsHeaders });
     }
 }
