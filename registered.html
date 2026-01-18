@@ -36,51 +36,30 @@
             </tbody>
         </table>
     </div>
-
     <script>
-        // SECURITY SENTINEL
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 83))) return false;
-        };
-
-        // FETCH DATA FROM D1 (via get-registrations.js)
-        async function loadRoster() {
-            try {
-                const response = await fetch('/api/get-registrations');
-                const result = await response.json();
-                
-                const tableBody = document.getElementById('tableBody');
-                
-                if (result.success && result.data.length > 0) {
-                    tableBody.innerHTML = result.data.map(user => `
-                        <tr>
-                            <td>
-                                <strong>${user.full_name}</strong><br>
-                                <small>${user.email}</small>
-                            </td>
-                            <td>
-                                <span class="badge ${user.role.toLowerCase()}">${user.role}</span>
-                            </td>
-                            <td>${user.department || 'N/A'}</td>
-                            <td>
-                                <a href="https://wa.me/${user.whatsapp}" class="whatsapp-btn" target="_blank">
-                                    💬 ${user.whatsapp}
-                                </a>
-                            </td>
-                            <td>${user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</td>
-                        </tr>
-                    `).join('');
-                } else {
-                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No identities found in core.</td></tr>';
-                }
-            } catch (err) {
-                console.error("Master Roster Error:", err);
-                document.getElementById('tableBody').innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Connection to Master Core Failed.</td></tr>';
-            }
+async function loadRoster() {
+    try {
+        // This calls your functions/api/get-registrations.js
+        const response = await fetch('/api/get-registrations');
+        const result = await response.json();
+        
+        if (result.success) {
+            const tableBody = document.getElementById('rosterTable');
+            tableBody.innerHTML = result.data.map(user => `
+                <tr>
+                    <td>${user.full_name}</td>
+                    <td>${user.role}</td>
+                    <td>${user.email}</td>
+                    <td>${user.whatsapp}</td>
+                </tr>
+            `).join('');
         }
+    } catch (err) {
+        console.error("Failed to load Master Roster", err);
+    }
+}
+window.onload = loadRoster;
+</script>
 
-        loadRoster();
-    </script>
 </body>
 </html>
