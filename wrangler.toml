@@ -1,0 +1,7 @@
+name = "professionalabidkhan-hue-github-io"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "abid_pedagogy_db"
+database_id = "c915bd8a-09fd-4a4c-84ae-8649cada5fd2"
