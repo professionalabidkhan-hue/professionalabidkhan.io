@@ -141,85 +141,114 @@
 <script>
 // 1. UI Control Functions
 function selectPath(role) {
-    document.getElementById('card-trainer').classList.toggle('active', role === 'trainer');
-    document.getElementById('card-student').classList.toggle('active', role === 'student');
-    document.getElementById('trainerFields').style.display = (role === 'trainer') ? 'block' : 'none';
+    const isTrainer = role === 'trainer';
+    
+    // Update visual classes
+    document.getElementById('card-trainer').classList.toggle('active', isTrainer);
+    document.getElementById('card-student').classList.toggle('active', !isTrainer);
+    
+    // Toggle visibility of specific fields
+    document.getElementById('trainerFields').style.display = isTrainer ? 'block' : 'none';
+    
+    // Set hidden input value
     document.getElementById('selectedRole').value = role;
 }
 
 function toggleButton() {
     const isChecked = document.getElementById('agree').checked;
     const btn = document.getElementById('submitBtn');
-    btn.disabled = !isChecked;
-    btn.style.opacity = isChecked ? "1" : "0.5";
-    btn.style.cursor = isChecked ? "pointer" : "not-allowed";
+    
+    if (isChecked) {
+        btn.disabled = false;
+        btn.classList.add('btn-active');
+    } else {
+        btn.disabled = true;
+        btn.classList.remove('btn-active');
+    }
 }
 
 // 2. Main Submission Logic
-const _coreLogic = () => {
+const _initHubLogic = () => {
     const form = document.getElementById('signupForm');
     const status = document.getElementById('statusMessage');
+    const btn = document.getElementById('submitBtn');
 
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            
-            // Enter Loading State
-            btn.innerHTML = 'SYNCHRONIZING...';
-            btn.disabled = true;
-            status.classList.add('d-none'); 
+    if (!form) return;
 
-            const payload = {
-                name: document.getElementById('full_name').value,
-                email: document.getElementById('email').value,
-                whatsapp: document.getElementById('whatsapp').value,
-                password: document.getElementById('password').value,
-                role: document.getElementById('selectedRole').value,
-                department: document.getElementById('department').value,
-                timing: document.getElementById('timing').value,
-                fee: document.getElementById('proposed_fee').value,
-                qc: document.getElementById('qualification')?.value || null,
-                ex: document.getElementById('experience')?.value || null
-            };
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // UI: Start Loading State
+        btn.innerHTML = '<span class="spinner-border-sm me-2"></span> SYNCHRONIZING...';
+        btn.disabled = true;
+        status.className = "mt-3 p-2 text-center d-none"; // Reset status
 
-            try {
-                const response = await fetch('/api/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+        // Gather Payload
+        const payload = {
+            name: document.getElementById('full_name').value,
+            email: document.getElementById('email').value,
+            whatsapp: document.getElementById('whatsapp').value,
+            password: document.getElementById('password').value,
+            role: document.getElementById('selectedRole').value,
+            department: document.getElementById('department').value,
+            timing: document.getElementById('timing').value,
+            fee: document.getElementById('proposed_fee').value,
+            // Trainer specific fields
+            qualification: document.getElementById('qualification')?.value || null,
+            experience: document.getElementById('experience')?.value || null,
+            expected_revenue: document.getElementById('expected_revenue')?.value || null,
+            timestamp: new Date().toISOString()
+        };
 
-                const result = await response.json();
+        try {
+            // Pointing to your Cloudflare Function
+            const response = await fetch('/api/signup', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
 
-                if (response.ok && result.success) {
-                    // SUCCESS: Green Feedback
-                    status.innerHTML = `<strong>✓ SUCCESS:</strong> ${result.message}`;
-                    status.className = "mt-3 p-2 text-center d-block";
-                    status.style.backgroundColor = "rgba(0, 255, 128, 0.1)";
-                    status.style.color = "#00ff80";
-                    status.style.border = "1px solid #00ff80";
-                    
-                    setTimeout(() => { window.location.href = 'signin.html'; }, 2500);
-                } else {
-                    // ERROR: Red Feedback
-                    throw new Error(result.error || "Master Hub rejected the credentials.");
-                }
-            } catch (err) {
-                status.innerHTML = `<strong>⚠ ERROR:</strong> ${err.message}`;
-                status.className = "mt-3 p-2 text-center d-block";
-                status.style.backgroundColor = "rgba(255, 49, 49, 0.1)";
-                status.style.color = "#ff3131";
-                status.style.border = "1px solid #ff3131";
-                
-                btn.innerText = "INITIALIZE IDENTITY";
-                btn.disabled = false;
+            // Safety check for non-JSON responses (the "<" error prevention)
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                throw new Error("The Hub returned an invalid response. Please check Cloudflare logs.");
             }
-        });
-    }
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                // SUCCESS: Visual Feedback
+                status.innerHTML = `<strong><i class="fas fa-check-circle"></i> SUCCESS:</strong> ${result.message}`;
+                status.className = "mt-3 p-2 text-center d-block animate__animated animate__fadeIn";
+                status.style.cssText = "background: rgba(0, 255, 128, 0.1); color: #00ff80; border: 1px solid #00ff80;";
+                
+                // Redirect after success
+                setTimeout(() => { 
+                    window.location.href = 'signin.html'; 
+                }, 2000);
+
+            } else {
+                throw new Error(result.error || "Master Hub rejected the credentials.");
+            }
+
+        } catch (err) {
+            // ERROR: Visual Feedback
+            status.innerHTML = `<strong><i class="fas fa-exclamation-triangle"></i> ERROR:</strong> ${err.message}`;
+            status.className = "mt-3 p-2 text-center d-block animate__animated animate__shakeX";
+            status.style.cssText = "background: rgba(255, 49, 49, 0.1); color: #ff3131; border: 1px solid #ff3131;";
+            
+            // UI: Reset Button
+            btn.innerHTML = 'INITIALIZE IDENTITY';
+            btn.disabled = false;
+        }
+    });
 };
 
-_coreLogic();
+// Start the core logic
+document.addEventListener('DOMContentLoaded', _initHubLogic);
 </script>
 </body>
 </html>
