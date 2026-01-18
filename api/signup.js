@@ -1,48 +1,42 @@
-import { MongoClient } from 'mongodb';
-
-export default async function handler(req, res) {
-  // Only allow POST requests for security
-  if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
-
-  const client = new MongoClient(process.env.MONGODB_URI);
-
+export async function onRequestPost(context) {
+  const { env, request } = context;
+  
   try {
-    await client.connect();
-    const db = client.db('Abid_ELearning_Hub');
-    const collection = db.collection('students');
+    const data = await request.json();
 
-    // Destructure all fields from the Master Form
-    const { 
-      name, email, role, whatsapp, password, 
-      department, timing, fee, joined_at 
-    } = req.body;
+    // 1. Check if the database binding "DB" is connected
+    if (!env.DB) {
+      return new Response(JSON.stringify({ 
+        success: false, 
+        error: "Database Connection Missing (Check Cloudflare Bindings)" 
+      }), { status: 500 });
+    }
 
-    // Build the Identity Document
-    const identityDocument = {
-      name,
-      email,
-      role, // 'student' or 'trainer'
-      whatsapp,
-      password, // Note: In production, consider bcrypt for password hashing
-      department, // 'IT' or 'QURAN'
-      timing,
-      proposed_fee: fee,
-      account_status: 'pending_verification',
-      joined_at: joined_at || new Date()
-    };
+    // 2. Insert into the D1 'users' table
+    await env.DB.prepare(`
+      INSERT INTO users (full_name, email, whatsapp, password, role, department, timing, qualification, experience, proposed_fee)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      data.name, data.email, data.whatsapp, data.password, 
+      data.role, data.department, data.timing, 
+      data.qc, data.ex, data.fee
+    ).run();
 
-    // Insert into the Sacred Database
-    await collection.insertOne(identityDocument);
-
-    res.status(200).json({ 
+    return new Response(JSON.stringify({ 
       success: true, 
-      message: `Identity Secured in ${department} Department.` 
-    });
+      message: "IDENTITY SECURED IN MASTER CORE" 
+    }), { headers: { "Content-Type": "application/json" } });
 
-  } catch (error) {
-    console.error("Master Core Error:", error);
-    res.status(500).json({ error: "Failed to initialize identity." });
-  } finally {
-    await client.close();
+  } catch (err) {
+    let errorMsg = err.message;
+    // Friendly message for duplicate emails
+    if (errorMsg.includes("UNIQUE constraint")) {
+        errorMsg = "This Email is already registered in the Hub.";
+    }
+    
+    return new Response(JSON.stringify({ success: false, error: errorMsg }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
   }
 }
